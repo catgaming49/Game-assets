@@ -1,0 +1,22 @@
+local spawnPos = script.Parent.CFrame
+local template = game.ReplicatedStorage:WaitForChild("Zombie")
+local current = script.Parent
+local isSpawning = script.Parent.IsSpawning.Value
+local clone = nil
+
+
+while isSpawning == true do
+	while clone == nil do
+		clone = template:Clone()
+		clone.Parent = script.Parent
+		clone:SetPrimaryPartCFrame(spawnPos)
+		if not clone.Parent then
+			print("has no parent")
+		end
+	end
+	if clone.Parent == nil then
+		clone = nil
+	end
+	
+	wait()
+end

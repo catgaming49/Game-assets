@@ -1,0 +1,58 @@
+local attributes = script.Parent:WaitForChild("Attributes")
+local humanoid = script.Parent:WaitForChild("Humanoid")
+local torso = script.Parent:WaitForChild("HumanoidRootPart")
+local PlayerService = game:GetService("Players")
+local range = 25
+local target
+
+local function StartAi()
+	print("starting ai")
+	while attributes.AiEnabled.value == true and humanoid.Health >= 0 do
+		print("its true")
+		wait()
+		local players = PlayerService:GetPlayers()
+		for i, v in pairs(players) do
+			if v.Character then
+				local dist = (torso.Position - v.Character:FindFirstChild("HumanoidRootPart").Position).Magnitude
+				if dist < range then
+					target = v.Character.HumanoidRootPart.Position
+					--range = dist
+					if target then
+						humanoid:MoveTo(target)
+						--print(v)
+					end
+				end
+			end
+			wait()
+		end
+	end
+end
+
+
+local function OnDeath(action)
+	if action == "remove" then
+		wait(5)
+		script.Parent:Destroy()
+	end
+end
+
+
+
+-- Not used wehn in repliactedstorage
+
+if attributes.AiEnabled.Value == true then
+	print("starting ai2")
+	StartAi()
+end
+
+attributes.AiEnabled.Changed:Connect(function()
+	if attributes.AiEnabled.Value == true then
+		print("starting ai3")
+		StartAi()
+	end
+end)
+
+
+humanoid.Died:Connect(function()
+	OnDeath("remove")
+end)

@@ -1,0 +1,4 @@
+function WaitSec(seconds)
+	local start = os.time()
+	repeat wait() until os.time() > start + seconds
+end
